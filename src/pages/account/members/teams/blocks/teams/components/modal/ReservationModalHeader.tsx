@@ -6,7 +6,7 @@ interface props {
   handleClose: () => void;
 }
 
-const ReservationModalHeader: React.FC<props> = ({ reservationId , handleClose}) => {
+const ReservationModalHeader: React.FC<props> = ({ reservationId, handleClose}) => {
   const title = reservationId ? 'Update Reservation' : 'Create Reservation';
   return (
     <div className="flex justify-between">

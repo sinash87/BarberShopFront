@@ -1,2 +1,2 @@
-export * from './UsersList.tsx';
-export * from './UserData.tsx';
+export * from './ReservationList.tsx';
+export * from './ReservationModel.tsx';

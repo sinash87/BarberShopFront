@@ -11,19 +11,44 @@ import {
 } from '@/components';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
-import { IUserData } from './';
+import { IReservationDate } from './';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { UserReservationTime } from '@/pages/account/members/teams/blocks/teams/components/UserReservationTime.tsx';
-import { UserReservationStatus } from '@/pages/account/members/teams/blocks/teams/components/UserReservationStatus.tsx';
+import { ReservationTime } from '@/pages/account/members/teams/blocks/teams/components/ReservationTime.tsx';
+import { ReservationStatus } from '@/pages/account/members/teams/blocks/teams/components/ReservationStatus.tsx';
 import { ReservationModalLayout } from '@/pages/account/members/teams/blocks/teams/components/modal/ReservationModalLayout.tsx';
+import { DeleteReservationModal } from '@/pages/account/members/teams/blocks/teams/components/modal/DeleteReservationModal.tsx';
 
 interface IColumnFilterProps<TData, TValue> {
   column: Column<TData, TValue>;
 }
 
-const UsersList = () => {
-  const storageFilterId = 'users-filter';
-  const [selectedReservationId, setSelectedReservationId] = useState<number | null>(null);
+const ReservationList = () => {
+  const [selectedReservationId, setSelectedReservationId] = useState<number | undefined>(undefined);
+  const [deleteReservationId, setDeleteReservationId] = useState<number | undefined>(undefined);
+  const [reservationUserNameForDeleteModal, setReservationUserNameForDeleteModal] =
+    useState<string>('');
+  const [reservationStatusForDeleteModal, setReservationStatusForDeleteModal] =
+    useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDeleteModal = (
+    id: number,
+    reservationUserName: string,
+    reservationStatus: string
+  ) => {
+    setReservationUserNameForDeleteModal(reservationUserName);
+    setReservationStatusForDeleteModal(reservationStatus);
+    setDeleteReservationId(id);
+    setIsDeleteModalOpen(true);
+  };
+  const handleCreateModal = () => {
+    setSelectedReservationId(undefined);
+    setIsModalOpen(true);
+  };
+  const handleEditModal = (id: number) => {
+    setSelectedReservationId(id);
+    setIsModalOpen(true);
+  };
   const ColumnInputFilter = <TData, TValue>({ column }: IColumnFilterProps<TData, TValue>) => {
     return (
       <Input
@@ -34,7 +59,8 @@ const UsersList = () => {
       />
     );
   };
-  const columns = useMemo<ColumnDef<IUserData>[]>(
+
+  const columns = useMemo<ColumnDef<IReservationDate>[]>(
     () => [
       {
         accessorKey: 'id',
@@ -124,8 +150,8 @@ const UsersList = () => {
         enableSorting: true,
         header: ({ column }) => <DataGridColumnHeader title="Visit Time" column={column} />,
         cell: (info) => (
-          <UserReservationTime
-            isUserActive={info.row.original.active == 'ACTIVE' || false}
+          <ReservationTime
+            isReservationActive={info.row.original.active == 'ACTIVE' || false}
             visitTime={info.getValue() as number}
           />
         ),
@@ -156,7 +182,7 @@ const UsersList = () => {
         header: ({ column }) => <DataGridColumnHeader title="Status" column={column} />,
         enableSorting: true,
         cell: (info) => {
-          return <UserReservationStatus status={info.getValue() as string} />;
+          return <ReservationStatus status={info.getValue() as string} />;
         },
         meta: {
           headerClassName: 'w-[200px]',
@@ -170,7 +196,7 @@ const UsersList = () => {
         cell: ({ row }) => (
           <button
             className="btn btn-sm btn-icon btn-clear btn-light"
-            onClick={() => setSelectedReservationId(row.original.id)}
+            onClick={() => handleEditModal(row.original.id)}
           >
             <KeenIcon icon="notepad-edit" />
           </button>
@@ -186,7 +212,9 @@ const UsersList = () => {
         cell: ({ row }) => (
           <button
             className="btn btn-sm btn-icon btn-clear btn-light"
-            onClick={() => alert(`Clicked on delete for ${row.original.username}`)}
+            onClick={() =>
+              handleDeleteModal(row.original.id, row.original.username, row.original.active)
+            }
           >
             <KeenIcon icon="trash" />
           </button>
@@ -200,7 +228,6 @@ const UsersList = () => {
   );
   const handleRowSelection = (state: RowSelectionState) => {
     const selectedRowIds = Object.keys(state);
-    console.log(selectedRowIds);
     if (selectedRowIds.length > 0) {
       toast(`Total ${selectedRowIds.length} are selected.`, {
         description: `Selected row IDs: ${selectedRowIds}`,
@@ -217,7 +244,7 @@ const UsersList = () => {
 
     return (
       <div className="card-header flex-wrap px-5 py-5 border-b-0">
-        <h3 className="card-title">Users List</h3>
+        <h3 className="card-title">Reservation List</h3>
 
         <div className="flex flex-wrap items-center gap-2.5">
           <div className="flex gap-6">
@@ -228,7 +255,7 @@ const UsersList = () => {
               />
               <input
                 type="text"
-                placeholder="Search Users"
+                placeholder="Search Reservations"
                 className="input input-sm ps-8"
                 value={(table.getColumn('username')?.getFilterValue() as string) ?? ''}
                 onChange={(event) =>
@@ -238,7 +265,9 @@ const UsersList = () => {
             </div>
           </div>
           {/*<DataGridColumnVisibility table={table} />*/}
-          <ReservationModalLayout onClose={() => setSelectedReservationId(null)} />
+          <button className="btn btn-light btn-sm" onClick={handleCreateModal}>
+            Add Reservation
+          </button>
           <label className="switch switch-sm">
             <input name="check" type="checkbox" value="1" className="order-2" readOnly />
             <span className="switch-label order-1">Only Active Groups</span>{' '}
@@ -248,7 +277,6 @@ const UsersList = () => {
       </div>
     );
   };
-
   return (
     <>
       <DataGrid
@@ -259,15 +287,25 @@ const UsersList = () => {
         sorting={[{ id: 'username', desc: false }]}
         toolbar={<Toolbar />}
         layout={{ card: true }}
+        isModalOpen={isModalOpen}
+        isDeleteModalOpen={isDeleteModalOpen}
       />
-      {selectedReservationId !== null && (
-        <ReservationModalLayout
-          reservationId={selectedReservationId}
-          onClose={() => setSelectedReservationId(null)}
-        />
-      )}
+      <ReservationModalLayout
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        reservationId={selectedReservationId}
+        setReservationId={(id) => setSelectedReservationId(id)}
+      />
+      <DeleteReservationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        reservationId={deleteReservationId}
+        setDeleteReservationId={(id) => setDeleteReservationId(id)}
+        reservationUserName={reservationUserNameForDeleteModal}
+        reservationStatus={reservationStatusForDeleteModal}
+      />
     </>
   );
 };
 
-export { UsersList };
+export { ReservationList };
