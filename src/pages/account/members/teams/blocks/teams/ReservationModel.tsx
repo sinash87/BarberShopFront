@@ -1,10 +1,9 @@
-interface GetServiceDto{
+interface GetServiceDto {
   name: string;
-  price: number
+  price: number;
 }
 
-
-interface IUserData {
+interface IReservationDate {
   id: number;
   username: string;
   phoneNumber: string;
@@ -13,4 +12,4 @@ interface IUserData {
   services: GetServiceDto[];
 }
 
-export { type IUserData };
+export { type IReservationDate };

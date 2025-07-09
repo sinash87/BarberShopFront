@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { DataGridInner, DataGridProvider } from '.';
 import {
   ColumnFiltersState,
@@ -7,6 +7,9 @@ import {
   Table,
   TableOptions
 } from '@tanstack/react-table';
+import {
+  ReservationModalLayout
+} from '@/pages/account/members/teams/blocks/teams/components/modal/ReservationModalLayout.tsx';
 
 export type TDataGridLayoutCellSpacing = 'xs' | 'md' | 'sm' | 'lg';
 
@@ -18,7 +21,7 @@ export type TDataGridRequestParams = {
 };
 
 export interface TDataGridProps<TData extends object> {
-  columns: any[];
+  columns?: any[];
   data?: TData[];
   rowSelection?: boolean;
   getRowId?: TableOptions<TData>['getRowId'];
@@ -54,6 +57,8 @@ export interface TDataGridProps<TData extends object> {
   serverSide?: boolean;
   onFetchData?: (params: TDataGridRequestParams) => Promise<any>;
   children?: ReactNode;
+  isModalOpen?: boolean;
+  isDeleteModalOpen?: boolean;
 }
 
 export const DataGrid = <TData extends object>(props: TDataGridProps<TData>) => {

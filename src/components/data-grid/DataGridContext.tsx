@@ -1,29 +1,27 @@
 'use client';
 
 import {
+  ColumnFiltersState,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  PaginationState,
-  useReactTable,
-  ColumnFiltersState,
-  VisibilityState,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  RowSelectionState,
   OnChangeFn,
+  PaginationState,
+  RowSelectionState,
+  SortingState,
   Table,
-  SortingState
+  useReactTable,
+  VisibilityState
 } from '@tanstack/react-table';
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { DataGridInner } from './DataGridInner';
-import { TDataGridProps, TDataGridRequestParams } from './DataGrid';
-import { deepMerge, debounce } from '@/lib/helpers';
+import { TDataGridProps } from './DataGrid';
+import { debounce, deepMerge } from '@/lib/helpers';
 import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_APP_API_URL;
-export const RESERVATION_URL = `${API_URL}/v1/reservation`;
+import { RESERVATION_URL } from '@/pages/account/members/teams/blocks/teams/_request.ts';
 
 export interface IDataGridContextProps<TData extends object> {
   props: TDataGridProps<TData>;
@@ -111,6 +109,17 @@ export const DataGridProvider = <TData extends object>(props: TDataGridProps<TDa
     }
   }, [loading, pagination, sorting, columnFilters, mergedProps.onFetchData]);
   const debouncedFetchData = debounce(fetchServerSideData, 100);
+  useEffect(() => {
+    if (props.isModalOpen == false){
+      loadData()
+    }
+  }, [props.isModalOpen]);
+
+  useEffect(() => {
+    if (props.isDeleteModalOpen == false){
+      loadData()
+    }
+  }, [props.isDeleteModalOpen]);
 
   const loadData = () => {
     if (mergedProps.serverSide) {

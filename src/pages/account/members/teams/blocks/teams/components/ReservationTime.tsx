@@ -3,17 +3,17 @@ import React from 'react';
 
 type props = {
   visitTime: number;
-  isUserActive: boolean;
+  isReservationActive: boolean;
 };
 
-const UserReservationTime: React.FC<props> = ({ visitTime, isUserActive }) => {
+const ReservationTime: React.FC<props> = ({ visitTime, isReservationActive }) => {
   const visitDate = new Date(visitTime);
   const now = new Date();
   const formattedDate = format(visitDate, 'yyyy-MM-dd');
   const formattedTime = format(visitDate, 'HH:mm');
   const diffMs = visitDate.getTime() - now.getTime();
   const diffHours = diffMs / (1000 * 60 * 60);
-  const timeColor = !isUserActive
+  const timeColor = !isReservationActive
     ? 'text-gray-700'
     : diffHours > 0 && diffHours < 1
       ? 'text-yellow-600'
@@ -28,4 +28,4 @@ const UserReservationTime: React.FC<props> = ({ visitTime, isUserActive }) => {
   );
 };
 
-export { UserReservationTime };
+export { ReservationTime };
