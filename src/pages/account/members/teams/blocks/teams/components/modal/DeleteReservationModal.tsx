@@ -15,7 +15,6 @@ interface props {
   onClose: () => void;
   isOpen: boolean;
   setDeleteReservationId: (id: number | undefined) => void;
-  reservation: object;
   reservationUserName: string;
   reservationStatus: string;
 }

@@ -10,6 +10,7 @@ interface IReservationDate {
   visitTime: number;
   active: string;
   services: GetServiceDto[];
+  userGuest: boolean;
 }
 
 export { type IReservationDate };

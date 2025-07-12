@@ -92,6 +92,11 @@ const ReservationList = () => {
           return (
             <div className="flex flex-col gap-2">
               <div className="leading-none font-medium text-sm text-gray-900">
+                {info.row.original.userGuest && (
+                  <span className="mr-5 bg-gray-300 py-1.5 px-2 rounded-[8px] text-[12px] text-neutral-300">
+                    guest
+                  </span>
+                )}
                 {info.row.original.username}
               </div>
             </div>
