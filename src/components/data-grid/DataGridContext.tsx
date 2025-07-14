@@ -100,8 +100,9 @@ export const DataGridProvider = <TData extends object>(props: TDataGridProps<TDa
           size: pagination.pageSize
         }
       });
+      console.log(data);
       setData(data.content || []);
-      setTotalRows(data.content.length || 0);
+      setTotalRows(data.totalElements || 0);
     } catch (error) {
       console.error('Failed to fetch data:', error);
     } finally {
@@ -110,14 +111,14 @@ export const DataGridProvider = <TData extends object>(props: TDataGridProps<TDa
   }, [loading, pagination, sorting, columnFilters, mergedProps.onFetchData]);
   const debouncedFetchData = debounce(fetchServerSideData, 100);
   useEffect(() => {
-    if (props.isModalOpen == false){
-      loadData()
+    if (props.isModalOpen == false) {
+      loadData();
     }
   }, [props.isModalOpen]);
 
   useEffect(() => {
-    if (props.isDeleteModalOpen == false){
-      loadData()
+    if (props.isDeleteModalOpen == false) {
+      loadData();
     }
   }, [props.isDeleteModalOpen]);
 

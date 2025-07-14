@@ -88,7 +88,9 @@ const ReservationModalForm: React.FC<props> = ({ reservation, services, handleCl
         {/*username*/}
         <div className="sm:col-span-5">
           {/* begin::Label */}
-          <label className="block text-sm/6 font-medium text-neutral-300">username <KeenIcon icon="user"/></label>
+          <label className="block text-sm/6 font-medium text-neutral-300">
+            username <KeenIcon icon="user" />
+          </label>
           {/* end::Label */}
 
           {/* begin::Input */}
@@ -120,7 +122,9 @@ const ReservationModalForm: React.FC<props> = ({ reservation, services, handleCl
         {/*phoneNumber*/}
         <div className="sm:col-span-5">
           {/* begin::Label */}
-          <label className="block text-sm/6 font-medium text-neutral-300">Phone Number  <KeenIcon icon="phone" className="text-[15px]"/></label>
+          <label className="block text-sm/6 font-medium text-neutral-300">
+            Phone Number <KeenIcon icon="phone" className="text-[15px]" />
+          </label>
           {/* end::Label */}
 
           {/* begin::Input */}
@@ -152,7 +156,9 @@ const ReservationModalForm: React.FC<props> = ({ reservation, services, handleCl
         {/*visitTime*/}
         <div className="sm:col-span-5">
           {/* begin::Label */}
-          <label className="block text-sm/6 font-medium text-neutral-300">Reservation Time <KeenIcon icon="calendar"/></label>
+          <label className="block text-sm/6 font-medium text-neutral-300">
+            Reservation Time <KeenIcon icon="calendar" />
+          </label>
           {/* end::Label */}
 
           {/* begin::Input */}
@@ -185,7 +191,9 @@ const ReservationModalForm: React.FC<props> = ({ reservation, services, handleCl
         {/*Services*/}
         <div className="sm:col-span-5">
           {/* begin::Label */}
-          <label className="block text-sm/6 font-medium text-neutral-300">Services <KeenIcon icon="plus-circle"/></label>
+          <label className="block text-sm/6 font-medium text-neutral-300">
+            Services <KeenIcon icon="plus-circle" />
+          </label>
           {/* end::Label */}
 
           {/* begin::Input */}
@@ -268,7 +276,9 @@ const ReservationModalForm: React.FC<props> = ({ reservation, services, handleCl
         {/*Status*/}
         <div className="sm:col-span-5">
           {/* begin::Label */}
-          <label className="block text-sm/6 font-medium text-neutral-300">Status <KeenIcon icon="chart"/></label>
+          <label className="block text-sm/6 font-medium text-neutral-300">
+            Status <KeenIcon icon="chart" />
+          </label>
           {/* end::Label */}
 
           {/* begin::Input */}
