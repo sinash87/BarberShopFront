@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDataGrid } from '.';
-import { ChevronRightIcon, ChevronLeftIcon } from 'lucide-react';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import {
   Select,
   SelectContent,
